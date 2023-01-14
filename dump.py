@@ -9,6 +9,7 @@ def read():
 
 def dump():
 	read()
+	tmes = ''
 	for i in db:
 		ttime = db[i]
 
@@ -16,7 +17,8 @@ def dump():
 		minutes = ttime//60 ; ttime = ttime - minutes*60
 		seconds = ttime
 
-		return f'{i[:i.find("[")]} >> {hours}:{minutes}:{seconds}'
+		tmes = f'{i[:i.find("[")]} >> {hours}:{minutes}:{seconds}'+'\n
+	return tmes'
 
 
 
