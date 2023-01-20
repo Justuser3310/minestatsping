@@ -22,27 +22,27 @@ read()
 
 needsleep = 0
 while True:
-    if needsleep == 30:
-        needsleep = 0
-        sleep(30)
-	db[i[0]] = db[i[0]] + 29
-    else:
-	    sleep(1)
-	    needsleep += 1
+	if needsleep == 30:
+		needsleep = 0
+		sleep(30)
+		db[i[0]] = db[i[0]] + 29
+	else:
+		sleep(1)
+		needsleep += 1
 
-    try:
-#    if True:
-        stats = ping.get_stats()
-        if stats['players']['online'] != 0:
-            for i in stats['players']['sample']:
-                #Add in db if not in db
-                if i[0] not in db:
-                    db[i[0]] = 1
-                    write()
-                else:
-                    db[i[0]] = db[i[0]] + 1
-                    write()
+	try:
+	#if True:
+		stats = ping.get_stats()
+		if stats['players']['online'] != 0:
+			for i in stats['players']['sample']:
+				#Add in db if not in db
+				if i[0] not in db:
+					db[i[0]] = 1
+					write()
+				else:
+					db[i[0]] = db[i[0]] + 1
+					write()
 
-    except Exception as e:
-        print(e)
+	except Exception as e:
+		print(e)
 
