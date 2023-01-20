@@ -25,6 +25,7 @@ while True:
     if needsleep == 30:
         needsleep = 0
         sleep(30)
+	db[i[0]] = db[i[0]] + 29
     else:
 	    sleep(1)
 	    needsleep += 1
