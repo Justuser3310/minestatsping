@@ -3,16 +3,17 @@
 #NO NULLPING
 
 from mctools import PINGClient
-#ping = PINGClient('play.dmcraft.online')
-ping = PINGClient('127.0.0.1')
 
 #My libraries
 from time import sleep
+import threading
 
+def main():
+	ping = PINGClient('127.0.0.1', 25577)
+	while True:
+		sleep(0.00001)
+		ping.ping()
 
-
-needsleep = 0
-while True:
-    sleep(0.001)
-    ping.get_stats()
-    #print('Ping')
+for i in range(10000):
+	th = threading.Thread(target=main)
+	th.start()
