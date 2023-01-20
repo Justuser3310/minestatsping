@@ -17,8 +17,8 @@ def dump():
 		minutes = ttime//60 ; ttime = ttime - minutes*60
 		seconds = ttime
 
-		tmes = f'{i[:i.find("[")]} >> {hours}:{minutes}:{seconds}'+'\n
-	return tmes'
+		tmes = tmes + f'{i[:i.find("[")]} >> {hours}:{minutes}:{seconds}'+'<br>'
+	return tmes
 
 
 

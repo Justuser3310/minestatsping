@@ -1,5 +1,5 @@
 from mctools import PINGClient
-ping = PINGClient('localhost')
+ping = PINGClient('play.dmcraft.online')
 #stats = ping.get_stats()
 
 #Work with JSON
@@ -29,19 +29,19 @@ while True:
 	    sleep(1)
 	    needsleep += 1
 
-	try:
-#	if True:
-		stats = ping.get_stats()
-		if stats['players']['online'] != 0:
-			for i in stats['players']['sample']:
-				#Add in db if not in db
-				if i[0] not in db:
-					db[i[0]] = 1
-					write()
-				else:
-					db[i[0]] = db[i[0]] + 1
-					write()
+    try:
+#    if True:
+        stats = ping.get_stats()
+        if stats['players']['online'] != 0:
+            for i in stats['players']['sample']:
+                #Add in db if not in db
+                if i[0] not in db:
+                    db[i[0]] = 1
+                    write()
+                else:
+                    db[i[0]] = db[i[0]] + 1
+                    write()
 
-	except:
-		print('Maybe server offline')
+    except Exception as e:
+        print('e')
 
