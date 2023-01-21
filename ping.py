@@ -21,11 +21,12 @@ from time import sleep
 read()
 
 needsleep = 0
+ttime = 0
 while True:
 	if needsleep == 30:
 		needsleep = 0
 		sleep(30)
-		db[i[0]] = db[i[0]] + 29
+		ttime = 29
 	else:
 		sleep(1)
 		needsleep += 1
@@ -37,11 +38,12 @@ while True:
 			for i in stats['players']['sample']:
 				#Add in db if not in db
 				if i[0] not in db:
-					db[i[0]] = 1
+					db[i[0]] = 1 + ttime
 					write()
 				else:
-					db[i[0]] = db[i[0]] + 1
+					db[i[0]] = db[i[0]] + 1 + ttime
 					write()
+		ttime = 0
 
 	except Exception as e:
 		print(e)
