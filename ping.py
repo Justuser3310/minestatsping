@@ -20,16 +20,9 @@ from time import sleep
 #Read
 read()
 
-needsleep = 0
 ttime = 0
 while True:
-	if needsleep == 30:
-		needsleep = 0
-		sleep(30)
-		ttime = 29
-	else:
-		sleep(1)
-		needsleep += 1
+	sleep(1)
 
 	try:
 	#if True:
