@@ -39,6 +39,10 @@ while True:
 		ttime = 0
 
 	except Exception as e:
-		ping = PINGClient('play.dmcraft.online')
-		print(e)
+		if e == '[Errno 32] Broken pipe':
+			sleep(60)
+			ttime = 59
+			print("CATCHED")
+		else:
+			print(e)
 
