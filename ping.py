@@ -1,17 +1,22 @@
 from mctools import PINGClient
-ping = PINGClient('play.dmcraft.online')
+ping = PINGClient('135.181.170.94',25630)
 #stats = ping.get_stats()
+
+#Get home dir
+from subprocess import getoutput
+global home
+home = getoutput("echo $HOME")
 
 #Work with JSON
 import json
 def read():
-	global db
-	with open('db.json', 'r') as openfile:
+	global db, home
+	with open(f'{home}/db.json', 'r') as openfile:
 		db = json.load(openfile)
 def write():
 	global db
 	js = json.dumps(db, indent=4)
-	with open("db.json", "w") as outfile:
+	with open(f'{home}/db.json', 'w') as outfile:
 		outfile.write(js)
 
 #My libraries
@@ -39,6 +44,6 @@ while True:
 		ttime = 0
 
 	except Exception as e:
-		ping = PINGClient('play.dmcraft.online')
+		ping = PINGClient('135.181.170.94',25630)
 		print(e)
 

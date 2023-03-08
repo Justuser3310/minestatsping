@@ -1,8 +1,13 @@
+#Get home dir
+from subprocess import getoutput
+global home
+home = getoutput("echo $HOME")
+
 #Json
 import json
 def read():
-        global db
-        with open('db.json', 'r') as openfile:
+        global db, home
+        with open(f'{home}/db.json', 'r') as openfile:
                 db = json.load(openfile)
 
 
