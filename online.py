@@ -45,8 +45,6 @@ def check_online(message):
 	except:
 		pp = ''
 
-	print(pp)
-
 	bot.reply_to(message, f"""🟢 Игроки онлайн >> {onp}/{maxp}
 
 {pp}
