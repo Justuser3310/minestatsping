@@ -1,22 +1,31 @@
 from mctools import PINGClient
 import telebot
+from threading import Thread
+from time import time, sleep
 
 from db import *
 
 API_TOKEN = read()['token']
 bot = telebot.TeleBot(API_TOKEN)
 
-ping = PINGClient('CoolFunZone.aternos.me', 36413)
-
-stats = ping.get_stats()
-print(stats)
+# 764 - 1.20.2
+host = 'CoolFunZone.aternos.me'
+port = 36413
+prot = 764
+global c
+c = PINGClient(host, port, proto_num = prot)
 
 @bot.message_handler(commands=['online'])
 def check_online(message):
+	global c
+
 	try:
-		stats = ping.get_stats()
+		stats = c.get_stats()
+		ms = c.ping()
 	except:
 		bot.reply_to(message, "🔴 Сервер оффлайн")
+		c.stop()
+		c = PINGClient(host, port, proto_num = prot)
 		return 0
 
 	maxp = stats['players']['max']
@@ -35,7 +44,9 @@ def check_online(message):
 
 	bot.reply_to(message, f"""🟢 Игроки онлайн >> {onp}/{maxp}
 
-{pp}""")
+{pp}
+
+📡  {round(ms)} ms""")
 
 
 while True:
