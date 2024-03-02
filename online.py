@@ -38,5 +38,12 @@ def check_online(message):
 {pp}""")
 
 
+while True:
+	try:
+		bot.infinity_polling()
+	except KeyboardInterrupt:
+		exit()
+	except:
+		pass
 
-bot.infinity_polling()
+
