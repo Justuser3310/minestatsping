@@ -7,9 +7,15 @@ if not os.path.exists('config.json'):
 	with open("config.json", "w") as outfile:
 		outfile.write(js)
 	print('Created new config.json')
+	exit()
 
 
 def read(file = 'config.json'):
+	if not os.path.exists(file):
+		with open(file, "w") as f:
+			f.write("{}")
+		f.close()
+
 	with open(file, "r", encoding="utf-8") as openfile:
 		db = json.load(openfile)
 	return db
