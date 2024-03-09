@@ -124,6 +124,9 @@ def players():
 																							cells={"values": [last_nick, last_time], "font_size": 18, "height": 30},
 																							) ], layout = layout )
 
+	# Подгоняем высоту таблицы: 40 пикселей заголовка + кол.элементов * 30
+	last_fig.layout.update({'height': 40 + len(last_nick)*30 })
+
 	gr_conf = {"displayModeBar": False, "showAxisDragHandles": False, "showAxisRangeEntryBoxes": False, "fillFrame": False}
 	return html.Div([
 		html.H2("Топ по времени"),
