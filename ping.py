@@ -1,49 +1,87 @@
 from mctools import PINGClient
-ping = PINGClient('135.181.170.94',25630)
-#stats = ping.get_stats()
+from time import sleep, time
 
-#Get home dir
-from subprocess import getoutput
-global home
-home = getoutput("echo $HOME")
+from datetime import datetime
+now = datetime.now
 
-#Work with JSON
-import json
-def read():
-	global db, home
-	with open(f'{home}/db.json', 'r') as openfile:
-		db = json.load(openfile)
-def write():
-	global db
-	js = json.dumps(db, indent=4)
-	with open(f'{home}/db.json', 'w') as outfile:
-		outfile.write(js)
+host = 'CoolFunZone.aternos.me'
+port = 36413
+# 764 - 1.20.2
+prot = 764
+global c
+c = PINGClient(host, port, proto_num = prot)
 
-#My libraries
-from time import sleep
+from db import *
+from func import *
 
-#Read
-read()
+date = now().strftime("%Y-%m-%d")
+# Проверяем существует ли
+stat_exist(date)
+db = read(f'data/{date}.json')
 
-ttime = 0
+# КАК ЧАСТО ОБНОВЛЯЕМ (секунды)
+update = 60
+
 while True:
-	sleep(1)
-
 	try:
-	#if True:
-		stats = ping.get_stats()
-		if stats['players']['online'] != 0:
-			for i in stats['players']['sample']:
-				#Add in db if not in db
-				if i[0] not in db:
-					db[i[0]] = 1 + ttime
-					write()
-				else:
-					db[i[0]] = db[i[0]] + 1 + ttime
-					write()
-		ttime = 0
+		raw = c.get_stats()
+		ms = round( c.ping() ) # Пинг
+	except:
+		c.stop()
+		c = PINGClient(host, port, proto_num = prot)
+		continue
 
-	except Exception as e:
-		ping = PINGClient('135.181.170.94',25630)
-		print(e)
+	if "sample" in raw["players"]:
+		# Список игроков
+		players_raw = raw["players"]["sample"]
+		# Оставляем только ники (без айди)
+		players = []
+		for i in players_raw:
+			players.append(i[0][:i[0].find('[')])
+		# Онлайн
+		online = raw["players"]["online"]
+	else:
+		players = []
+		online = 0
 
+	# Фикс атерноса
+	max = raw["players"]["max"]
+	if max == 0:
+		ms = 0
+
+	# Открываем БД.
+	# Дата
+	date = now().strftime("%Y-%m-%d")
+	# Проверяем существует ли
+	stat_exist(date)
+	db = read(f'data/{date}.json')
+
+	# Заполняем БД
+	# Пинг
+	db["ping"]["time"].append( now().strftime('%H:%M') )
+	db["ping"]["ms"].append( ms )
+	# Онлайн
+	db["online"]["time"].append( now().strftime('%H:%M') )
+	db["online"]["count"].append( online )
+
+
+	# Топ игроков по времени и последнее время захода
+	stat = read('data/stat.json')
+	# Перебираем игроков
+	for i in players:
+		# Если игрок уже в базе
+		if i in stat["players"]["time"]:
+			stat["players"]["time"][i] += update
+		else:
+			stat["players"]["time"][i] = update
+		# Время захода
+		stat["players"]["last"][i] = time()
+
+
+	# Записываем изменения
+	write(db, f'data/{date}.json')
+
+	write(stat, 'data/stat.json')
+
+	# Задержка
+	sleep(update)
